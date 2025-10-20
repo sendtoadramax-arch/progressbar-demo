@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modern Progress Bar</title>
+  <title>Progress Bar with Percentage</title>
   <style>
     body {
       margin: 0;
@@ -18,34 +18,74 @@
     .progress-container {
       width: 90%;
       max-width: 420px;
-      background: #f3f3f3;
+      background: #e6e6e6;
       border-radius: 30px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      position: relative;
     }
 
     .progress-bar {
       width: 0%;
-      height: 14px;
+      height: 24px;
       border-radius: 30px;
       background: linear-gradient(90deg, #007BFF, #00C6FF);
       transition: width 0.1s linear;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Gray text behind */
+    .progress-text-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      font-weight: 600;
+      font-size: 13px;
+      z-index: 1;
+    }
+
+    /* White text inside the blue bar */
+    .progress-text-fg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      mix-blend-mode: difference;
+      z-index: 3;
     }
   </style>
 </head>
 <body>
   <div class="progress-container">
     <div id="progress" class="progress-bar"></div>
+    <div id="progress-text-bg" class="progress-text-bg">0%</div>
+    <div id="progress-text-fg" class="progress-text-fg">0%</div>
   </div>
 
   <script>
     const progress = document.getElementById("progress");
+    const progressTextBg = document.getElementById("progress-text-bg");
+    const progressTextFg = document.getElementById("progress-text-fg");
 
     function animateProgress() {
       let current = 0;
       const target = 50; // target percent
-      const duration = 3000; // 4 seconds to fill
-      const resetDelay = 5000; // total cycle 5 seconds
+      const duration = 1000; // 8 seconds to fill
+      const resetDelay = 9000; // 2 seconds pause
       const intervalTime = 50; // update every 50ms
       const step = (target / (duration / intervalTime));
 
@@ -54,12 +94,20 @@
         if (current >= target) {
           current = target;
           clearInterval(interval);
+
+          // Pause, then reset and restart
           setTimeout(() => {
             progress.style.width = "0%";
-            setTimeout(animateProgress, 500); // restart after short delay
-          }, resetDelay - duration);
+            progressTextBg.textContent = "0%";
+            progressTextFg.textContent = "0%";
+            setTimeout(animateProgress, 500);
+          }, resetDelay);
         }
-        progress.style.width = current + "%";
+
+        const percentage = Math.round(current) + "%";
+        progress.style.width = percentage;
+        progressTextBg.textContent = percentage;
+        progressTextFg.textContent = percentage;
       }, intervalTime);
     }
 
