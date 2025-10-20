@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Progress Bar</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f9fafb;
+      font-family: "Inter", sans-serif;
+    }
+
+    .progress-container {
+      width: 90%;
+      max-width: 420px;
+      background: #f3f3f3;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 14px;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #007BFF, #00C6FF);
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-container">
+    <div id="progress" class="progress-bar"></div>
+  </div>
+
+  <script>
+    const progress = document.getElementById("progress");
+
+    function animateProgress() {
+      let current = 0;
+      const target = 50; // target percent
+      const duration = 3000; // 4 seconds to fill
+      const resetDelay = 5000; // total cycle 5 seconds
+      const intervalTime = 50; // update every 50ms
+      const step = (target / (duration / intervalTime));
+
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
+          setTimeout(() => {
+            progress.style.width = "0%";
+            setTimeout(animateProgress, 500); // restart after short delay
+          }, resetDelay - duration);
+        }
+        progress.style.width = current + "%";
+      }, intervalTime);
+    }
+
+    window.addEventListener("load", () => {
+      progress.style.width = "0%";
+      animateProgress();
+    });
+  </script>
+</body>
+</html>
