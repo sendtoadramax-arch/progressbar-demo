@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Progress Bar</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      font-family: "Inter", sans-serif;
+    }
+
+    .progress-wrapper {
+      width: 600px; /* not full screen */
+      max-width: 600px;
+      height: 35px;
+      position: relative;
+      background: transparent;
+      border-radius: 50px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #007bff, #00c6ff);
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: width 0.1s linear, opacity 0.5s ease;
+      opacity: 0;
+    }
+
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 16px;
+      pointer-events: none;
+      white-space: nowrap;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      transition: left 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-wrapper">
+    <div class="progress-bar" id="progress"></div>
+    <div class="progress-text" id="progress-text">0%</div>
+  </div>
+
+  <script>
+    const progress = document.getElementById("progress");
+    const progressText = document.getElementById("progress-text");
+
+    function animateProgress() {
+      let current = 0;
+      const target = 77.08;
+      const duration = 1000; // fill speed
+      const resetDelay = 10000; // pause before reset
+      const intervalTime = 50;
+      const step = target / (duration / intervalTime);
+
+      progress.style.opacity = 1; // fade in
+
+      const interval = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
+          setTimeout(() => {
+            progress.style.opacity = 0; // fade out
+            setTimeout(() => {
+              progress.style.width = "0%";
+              progressText.textContent = "0%";
+              progressText.style.left = "10px";
+              setTimeout(animateProgress, 800); // restart after fade
+            }, 800);
+          }, resetDelay);
+        }
+
+        const percentage = Math.round(current);
+        progress.style.width = percentage + "%";
+        progressText.textContent = percentage + "%";
+
+        // Keep % inside bar but not too close to edge
+        const offset = 45; // adjust this to move text inside more
+        const textPosition = Math.min(percentage, 100) + "%";
+        progressText.style.left =
+          percentage < 5 ? "10px" : `calc(${percentage}% - ${offset}px)`;
+      }, intervalTime);
+    }
+
+    window.addEventListener("load", animateProgress);
+  </script>
+</body>
+</html>
