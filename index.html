@@ -62,7 +62,7 @@
 
     function animateProgress() {
       let current = 0;
-      const target = 100;
+      const target = 98;
       const duration = 1000; // fill speed
       const resetDelay = 10000; // pause before reset
       const intervalTime = 50;
@@ -92,7 +92,7 @@
 
         // Keep % inside bar but not too close to edge
         const offset = 45; // adjust this to move text inside more
-        const textPosition = Math.min(percentage, 100) + "%";
+        const textPosition = Math.min(percentage, 98) + "%";
         progressText.style.left =
           percentage < 5 ? "10px" : `calc(${percentage}% - ${offset}px)`;
       }, intervalTime);
