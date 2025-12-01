@@ -62,7 +62,7 @@
 
     function animateProgress() {
       let current = 0;
-      const target = 48.37;
+      const target = 52.3;
       const duration = 1000; // fill speed
       const resetDelay = 10000; // pause before reset
       const intervalTime = 50;
@@ -86,7 +86,7 @@
           }, resetDelay);
         }
 
-        const percentage = Math.round(current);
+        const percentage = current.toFixed(2);
         progress.style.width = percentage + "%";
         progressText.textContent = percentage + "%";
 
