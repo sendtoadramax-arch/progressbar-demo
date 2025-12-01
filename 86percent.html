@@ -91,7 +91,7 @@
         progressText.textContent = percentage + "%";
 
         // Keep % inside bar but not too close to edge
-        const offset = 45; // adjust this to move text inside more
+        const offset = 60; // adjust this to move text inside more
         const textPosition = Math.min(percentage, 100) + "%";
         progressText.style.left =
           percentage < 5 ? "10px" : `calc(${percentage}% - ${offset}px)`;
