@@ -92,7 +92,7 @@
         progress.style.width = percentage + "%";
         progressText.textContent = percentage + "%";
 
-        const offset = 61;
+        const offset = 50;
         progressText.style.left =
           percentage < 5 ? "10px" : `calc(${percentage}% - ${offset}px)`;
       }, intervalTime);
