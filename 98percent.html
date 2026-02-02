@@ -86,7 +86,7 @@
           }, resetDelay);
         }
 
-        const percentage = current.toFixed(2);
+        const percentage = Math.round(current);
         progress.style.width = percentage + "%";
         progressText.textContent = percentage + "%";
 
