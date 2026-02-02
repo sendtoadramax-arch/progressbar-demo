@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,7 +62,7 @@
 
     function animateProgress() {
       let current = 0;
-      const target = 98.69;
+      const target = 98;
       const duration = 1000; // fill speed
       const resetDelay = 10000; // pause before reset
       const intervalTime = 50;
@@ -87,12 +86,12 @@
           }, resetDelay);
         }
 
-        const percentage = Math.round(current);
+        const percentage = current.toFixed(2);
         progress.style.width = percentage + "%";
         progressText.textContent = percentage + "%";
 
         // Keep % inside bar but not too close to edge
-        const offset = 45; // adjust this to move text inside more
+        const offset = 60; // adjust this to move text inside more
         const textPosition = Math.min(percentage, 100) + "%";
         progressText.style.left =
           percentage < 5 ? "10px" : `calc(${percentage}% - ${offset}px)`;
@@ -103,4 +102,3 @@
   </script>
 </body>
 </html>
-
