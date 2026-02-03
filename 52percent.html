@@ -16,7 +16,7 @@
     }
 
     .progress-wrapper {
-      width: 600px;
+      width: 600px; /* not full screen */
       max-width: 600px;
       height: 35px;
       position: relative;
@@ -63,36 +63,36 @@
     function animateProgress() {
       let current = 0;
       const target = 58.01;
-      const duration = 1000;
-      const resetDelay = 10000;
+      const duration = 1000; // fill speed
+      const resetDelay = 10000; // pause before reset
       const intervalTime = 50;
       const step = target / (duration / intervalTime);
 
-      progress.style.opacity = 1;
+      progress.style.opacity = 1; // fade in
 
       const interval = setInterval(() => {
         current += step;
-
         if (current >= target) {
           current = target;
           clearInterval(interval);
-
           setTimeout(() => {
-            progress.style.opacity = 0;
+            progress.style.opacity = 0; // fade out
             setTimeout(() => {
               progress.style.width = "0%";
               progressText.textContent = "0%";
               progressText.style.left = "10px";
-              setTimeout(animateProgress, 800);
+              setTimeout(animateProgress, 800); // restart after fade
             }, 800);
           }, resetDelay);
         }
 
-        const percentage = Math.round(current);
+        const percentage = current.toFixed(2);
         progress.style.width = percentage + "%";
         progressText.textContent = percentage + "%";
 
-        const offset = 50;
+        // Keep % inside bar but not too close to edge
+        const offset = 60; // adjust this to move text inside more
+        const textPosition = Math.min(percentage, 100) + "%";
         progressText.style.left =
           percentage < 5 ? "10px" : `calc(${percentage}% - ${offset}px)`;
       }, intervalTime);
