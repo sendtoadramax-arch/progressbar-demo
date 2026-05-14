@@ -1,57 +1,127 @@
-<script>
-  const progress = document.getElementById("progress");
-  const progressText = document.getElementById("progress-text");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blue Progress Bar</title>
 
-  function animateProgress() {
-    let current = 0;
-    const target = 10;
-    const duration = 1000;
-    const resetDelay = 10000;
-    const intervalTime = 50;
-    const step = target / (duration / intervalTime);
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      font-family: "Inter", sans-serif;
+    }
 
-    progress.style.opacity = 1;
+    .progress-wrapper {
+      width: 600px;
+      max-width: 600px;
+      height: 35px;
+      position: relative;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50px;
+      overflow: hidden;
+    }
 
-    const interval = setInterval(() => {
-      current += step;
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #007bff, #00c6ff);
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: width 0.1s linear, opacity 0.5s ease;
+      opacity: 0;
+    }
 
-      if (current >= target) {
-        current = target;
-        clearInterval(interval);
+    .progress-text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 16px;
+      pointer-events: none;
+      white-space: nowrap;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+      transition: left 0.1s linear;
+      left: 10px;
+    }
+  </style>
+</head>
+<body>
 
-        setTimeout(() => {
-          progress.style.opacity = 0;
+  <div class="progress-wrapper">
+    <div class="progress-bar" id="progress"></div>
+    <div class="progress-text" id="progress-text">0%</div>
+  </div>
+
+  <script>
+    const progress = document.getElementById("progress");
+    const progressText = document.getElementById("progress-text");
+    const wrapper = document.querySelector(".progress-wrapper");
+
+    function animateProgress() {
+      let current = 0;
+      const target = 10;
+      const duration = 1000;
+      const resetDelay = 10000;
+      const intervalTime = 50;
+      const step = target / (duration / intervalTime);
+
+      progress.style.opacity = 1;
+
+      const interval = setInterval(() => {
+        current += step;
+
+        if (current >= target) {
+          current = target;
+          clearInterval(interval);
 
           setTimeout(() => {
-            progress.style.width = "0%";
-            progressText.textContent = "0%";
-            progressText.style.left = "10px";
+            progress.style.opacity = 0;
 
-            setTimeout(animateProgress, 800);
-          }, 800);
-        }, resetDelay);
-      }
+            setTimeout(() => {
+              progress.style.width = "0%";
+              progressText.textContent = "0%";
+              progressText.style.left = "10px";
 
-      const percentage = Math.round(current);
+              setTimeout(animateProgress, 800);
+            }, 800);
 
-      progress.style.width = percentage + "%";
-      progressText.textContent = percentage + "%";
+          }, resetDelay);
+        }
 
-      // Better text positioning
-      const wrapperWidth =
-        document.querySelector(".progress-wrapper").offsetWidth;
+        const percentage = Math.round(current);
 
-      const textWidth = progressText.offsetWidth;
+        progress.style.width = percentage + "%";
+        progressText.textContent = percentage + "%";
 
-      let leftPos =
-        (wrapperWidth * percentage) / 100 - textWidth / 2;
+        // Dynamic text positioning
+        const wrapperWidth = wrapper.offsetWidth;
+        const textWidth = progressText.offsetWidth;
 
-      leftPos = Math.max(10, leftPos);
-      leftPos = Math.min(wrapperWidth - textWidth - 10, leftPos);
+        let leftPos =
+          (wrapperWidth * percentage) / 100 - textWidth / 2;
 
-      progressText.style.left = leftPos + "px";
-    }, intervalTime);
-  }
+        // Keep text inside bounds
+        leftPos = Math.max(10, leftPos);
+        leftPos = Math.min(
+          wrapperWidth - textWidth - 10,
+          leftPos
+        );
 
-  window.addEventListener("load", animateProgress);
-</script>
+        progressText.style.left = leftPos + "px";
+
+      }, intervalTime);
+    }
+
+    window.addEventListener("load", animateProgress);
+  </script>
+
+</body>
+</html>
