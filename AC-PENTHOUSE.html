@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Blue Progress Bar</title>
-
   <style>
     body {
       margin: 0;
@@ -21,9 +20,8 @@
       max-width: 600px;
       height: 35px;
       position: relative;
-      background: rgba(255,255,255,0.08);
+      background: transparent;
       border-radius: 50px;
-      overflow: hidden;
     }
 
     .progress-bar {
@@ -47,7 +45,7 @@
       font-size: 16px;
       pointer-events: none;
       white-space: nowrap;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
       transition: left 0.1s linear;
       left: 10px;
     }
@@ -63,7 +61,7 @@
   <script>
     const progress = document.getElementById("progress");
     const progressText = document.getElementById("progress-text");
-    const wrapper = document.querySelector(".progress-wrapper");
+    const progressWrapper = document.querySelector(".progress-wrapper");
 
     function animateProgress() {
       let current = 0;
@@ -92,28 +90,26 @@
 
               setTimeout(animateProgress, 800);
             }, 800);
-
           }, resetDelay);
         }
 
         const percentage = Math.round(current);
 
+        // Update bar width
         progress.style.width = percentage + "%";
+
+        // Update text
         progressText.textContent = percentage + "%";
 
         // Dynamic text positioning
-        const wrapperWidth = wrapper.offsetWidth;
+        const wrapperWidth = progressWrapper.offsetWidth;
         const textWidth = progressText.offsetWidth;
 
-        let leftPos =
-          (wrapperWidth * percentage) / 100 - textWidth / 2;
+        let leftPos = (wrapperWidth * percentage) / 100 - textWidth / 2 - 16;
 
-        // Keep text inside bounds
+        // Keep text inside bar boundaries
         leftPos = Math.max(10, leftPos);
-        leftPos = Math.min(
-          wrapperWidth - textWidth - 10,
-          leftPos
-        );
+        leftPos = Math.min(wrapperWidth - textWidth - 10, leftPos);
 
         progressText.style.left = leftPos + "px";
 
